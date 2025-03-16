@@ -10,7 +10,7 @@ object LanguageUtils {
 
     fun getPrintStatement(file: PsiFile, variableName: String): String {
         val extension = getFileExtension(file)
-        val emoji = EmojiGenerator.getRandomEmoji()
+        val emoji = EmojiGenerator.getNextEmoji()
 
         return when (extension) {
             "java" -> "System.out.println(\"$emoji $variableName = \" + $variableName);"
@@ -23,7 +23,7 @@ object LanguageUtils {
 
     fun getDefaultPrintStatement(file: PsiFile): String {
         val extension = getFileExtension(file)
-        val emoji = EmojiGenerator.getRandomEmoji()
+        val emoji = EmojiGenerator.getNextEmoji()
 
         return when (extension) {
             "java" -> "System.out.println(\"$emoji Debug point\");"
