@@ -8,6 +8,7 @@ import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
+import com.intellij.openapi.util.TextRange
 
 class AddPrintAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
@@ -26,7 +27,12 @@ class AddPrintAction : AnAction() {
 
         val offset = primaryCaret.offset
         val lineNumber = document.getLineNumber(offset)
+        val lineStartOffset = document.getLineStartOffset(lineNumber)
         val lineEndOffset = document.getLineEndOffset(lineNumber)
+
+        // Get the indentation of the current line
+        val currentLineText = document.getText(TextRange(lineStartOffset, lineEndOffset))
+        val indentation = currentLineText.takeWhile { it.isWhitespace() }
 
         val printStatement = if (selectedText.isNullOrEmpty()) {
             LanguageUtils.getDefaultPrintStatement(psiFile)
@@ -35,7 +41,8 @@ class AddPrintAction : AnAction() {
         }
 
         WriteCommandAction.runWriteCommandAction(project) {
-            document.insertString(lineEndOffset, "\n${printStatement}")
+            // Insert the print statement with proper indentation
+            document.insertString(lineEndOffset, "\n$indentation$printStatement")
         }
     }
 
