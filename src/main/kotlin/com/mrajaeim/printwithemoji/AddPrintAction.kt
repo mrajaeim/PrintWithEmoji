@@ -7,7 +7,6 @@ import com.intellij.openapi.command.WriteCommandAction
 import com.intellij.openapi.editor.Document
 import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
-import com.intellij.psi.PsiDocumentManager
 import com.intellij.psi.PsiFile
 
 class AddPrintAction : AnAction() {
@@ -16,7 +15,7 @@ class AddPrintAction : AnAction() {
         val editor = e.getData(CommonDataKeys.EDITOR) ?: return
         val psiFile = e.getData(CommonDataKeys.PSI_FILE) ?: return
 
-        if (!LanguageUtils.isLanguageSupported(psiFile.language)) {
+        if (!LanguageUtils.isFileSupported(psiFile)) {
             return
         }
 
@@ -30,10 +29,8 @@ class AddPrintAction : AnAction() {
         val lineEndOffset = document.getLineEndOffset(lineNumber)
 
         val printStatement = if (selectedText.isNullOrEmpty()) {
-            // No text selected, create a default print statement
             LanguageUtils.getDefaultPrintStatement(psiFile)
         } else {
-            // Use the selected text as variable name
             LanguageUtils.getPrintStatement(psiFile, selectedText)
         }
 
@@ -48,6 +45,6 @@ class AddPrintAction : AnAction() {
 
         e.presentation.isEnabledAndVisible = (psiFile != null &&
                 editor != null &&
-                psiFile.language.let { LanguageUtils.isLanguageSupported(it) })
+                LanguageUtils.isFileSupported(psiFile))
     }
 }
