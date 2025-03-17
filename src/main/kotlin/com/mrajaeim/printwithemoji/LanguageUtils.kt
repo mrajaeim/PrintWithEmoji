@@ -17,7 +17,7 @@ object LanguageUtils {
             "kt" -> "println(\"$emoji $variableName = \${$variableName}\")"
             "py" -> "print(f\"$emoji $variableName = {$variableName}\")"
             "js", "jsx", "ts", "tsx" -> "console.log(\"$emoji $variableName\", $variableName);"
-            else -> "console.log(\"$emoji $variableName\", $variableName);" // Default to JavaScript
+            else -> "print(\"$emoji $variableName\", $variableName);" // Default to JavaScript
         }
     }
 
@@ -30,7 +30,7 @@ object LanguageUtils {
             "kt" -> "println(\"$emoji Debug point\")"
             "py" -> "print(\"$emoji Debug point\")"
             "js", "jsx", "ts", "tsx" -> "console.log(\"$emoji Debug point\");"
-            else -> "console.log(\"$emoji Debug point\");" // Default to JavaScript
+            else -> "print(\"$emoji Debug point\");" // Default to JavaScript
         }
     }
 
