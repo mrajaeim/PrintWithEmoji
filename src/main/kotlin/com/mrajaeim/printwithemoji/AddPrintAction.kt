@@ -9,6 +9,7 @@ import com.intellij.openapi.editor.Editor
 import com.intellij.openapi.project.Project
 import com.intellij.psi.PsiFile
 import com.intellij.openapi.util.TextRange
+import com.intellij.psi.PsiManager
 
 class AddPrintAction : AnAction() {
     override fun actionPerformed(e: AnActionEvent) {
@@ -49,9 +50,24 @@ class AddPrintAction : AnAction() {
     override fun update(e: AnActionEvent) {
         val psiFile = e.getData(CommonDataKeys.PSI_FILE)
         val editor = e.getData(CommonDataKeys.EDITOR)
+        val project = e.project
+        val virtualFile = e.getData(CommonDataKeys.VIRTUAL_FILE)
 
-        e.presentation.isEnabledAndVisible = (psiFile != null &&
-                editor != null &&
-                LanguageUtils.isFileSupported(psiFile))
+        val psiFileVirtual = virtualFile?.let {
+            PsiManager.getInstance(project ?: return@let null).findFile(it)
+        }
+
+        println("#### Virtual File: $virtualFile")
+        println("#### PSI Virtual File: $psiFileVirtual")
+
+
+
+        println("#### psiFile: $psiFile")
+        println("#### editor: $editor")
+
+        val isSupported = psiFile?.let { LanguageUtils.isFileSupported(it) } ?: false
+        println("#### isSupported: $isSupported")
+
+        e.presentation.isEnabledAndVisible = (psiFile != null && editor != null && isSupported)
     }
 }
