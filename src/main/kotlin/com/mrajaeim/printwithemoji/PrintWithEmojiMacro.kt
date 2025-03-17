@@ -16,7 +16,7 @@ class PrintWithEmojiMacro : Macro() {
         val file = context.psiElementAtStartOffset?.containingFile ?: return null
 
         // Generate the print statement based on the file type using your LanguageUtils helper
-        val printStatement = LanguageUtils.getDefaultPrintStatement(file)
+        val printStatement = LanguageUtils.getDefaultPrintStatement(file, true)
 
         return TextResult(printStatement)
     }

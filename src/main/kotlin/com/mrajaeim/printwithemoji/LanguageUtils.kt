@@ -21,9 +21,9 @@ object LanguageUtils {
         }
     }
 
-    fun getDefaultPrintStatement(file: PsiFile): String {
+    fun getDefaultPrintStatement(file: PsiFile, randomEmoji: Boolean = false): String {
         val extension = getFileExtension(file)
-        val emoji = EmojiGenerator.getNextEmoji()
+        val emoji = if (randomEmoji) EmojiGenerator.getRandomEmoji() else EmojiGenerator.getNextEmoji()
 
         return when (extension) {
             "java" -> "System.out.println(\"$emoji Debug point\");"
